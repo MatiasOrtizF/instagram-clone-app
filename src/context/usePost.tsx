@@ -2,10 +2,12 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 import { AxiosRequestConfig } from "axios";
 import { Post } from "../types/index";
 import { post } from "../service/PostService";
+import { save } from "../service/SaveService";
 
 export const PostContext = createContext({
     posts: [] as Post[],
     getAllPosts: ()=> {},
+    getAllSave: ()=> {}
 });
 
 interface Props {
@@ -14,29 +16,30 @@ interface Props {
 
 export function PostProvider({children}: Props) {
     const [loading, setLoading] = useState<boolean>(true);
-    const [posts, setPosts] = useState<Array<Post>>([]);
+    const [posts, setPosts] = useState([]);
     const [config, setConfig] = useState<AxiosRequestConfig>({
         headers: {
-            'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxNCIsImlhdCI6MTcwMTY1MjYwMSwic3ViIjoiZW56b19mZXJuYW5kZXpAZW1haWwuY29tIiwiaXNzIjoiTWFpbiIsImV4cCI6MTcwMjI1NzQwMX0.w49szH616PI8N59Vfd16_Qx4rNRXJA1yWn727CEbF1E',
+            'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxNCIsImlhdCI6MTcwMTc0MTg4OSwic3ViIjoiZW56b19mZXJuYW5kZXpAZW1haWwuY29tIiwiaXNzIjoiTWFpbiIsImV4cCI6MTcwMjM0NjY4OX0.XOMuGzNkEUNZJc-GG9SpdfPDDrvDhptzEK_nVZlovD8',
             'Content-Type': 'application/json'
         }
     })
 
     useEffect(()=> {
+        getAllSave();
         getAllPosts();
     }, [])
 
     const getAllPosts = () => {
-        setLoading(true);
         post.getAllPosts(config).then(response=> {
             setPosts(response.data);
-            setLoading(false);
-            console.log(response);
         }).catch(error=> {
+            if(error.response.status === 401) {
+                alert("Your session has expired. Please log in again.");
+                //logOut();
+            }
             console.log(error);
         })
     }
-
     // const getAllPosts = () => {
     //     console.log("fetch")
     //     fetch("http://192.168.0.4:8081/api/post").then(response=> {
@@ -48,10 +51,19 @@ export function PostProvider({children}: Props) {
     //     })
     // }
 
+    const getAllSave = () => {
+        save.getAllSave(config).then(response=> {
+            
+        }).catch(error=> {
+            console.log(error);
+        })
+    }
+
     return(
         <PostContext.Provider value={{
             posts,
-            getAllPosts
+            getAllPosts,
+            getAllSave
         }}>
             {children}
         </PostContext.Provider>

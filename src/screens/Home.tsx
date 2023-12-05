@@ -41,23 +41,26 @@ export default function Home({navigation} : any) {
                 {posts.map((post, index) => (
                 <View key={index}>
                     <View style={{flexDirection:"row" , alignItems:"center" , margin:10}}>
-                        <Image style={{width:35 , height:35 , borderRadius:100}} source={{uri:post.image}}></Image>
+                        <Image style={{width:35 , height:35 , borderRadius:100}} source={{uri:post.user.imageProfile}}></Image>
                         <Text style={{marginLeft:10 , fontWeight: "700"}}>{post.user.userName}</Text>
                         <Image style={{width:15 , height:15 , marginLeft:5}} source={require('../../assets/icons/verificado-icon.png')} ></Image>
                         {/* agregar el lugar */}
                     </View>
                     {/* <View horizontal style={{marginBottom:10}}>
-                            <View>
-                                {post.labelled.length > 0 ?
-                                    <TouchableOpacity style={{position:"absolute" , zIndex:3 , bottom:15 , left:15}} onPress={()=> navigation.navigate('Labelled', {postId: post.id})}>
-                                        <Image style={{width:22 , height: 22}} source={require('../../assets/icons/user-icon.png')}></Image>
-                                    </TouchableOpacity>
-                                    :
-                                    null
-                                }
-                                <Image style={{width:"100%" , aspectRatio:1}}  resizeMode="cover" source={{uri:post.image}}></Image>
-                            </View>
+                        <View>
+                            {post.labelled.length > 0 ?
+                                <TouchableOpacity style={{position:"absolute" , zIndex:3 , bottom:15 , left:15}} onPress={()=> navigation.navigate('Labelled', {postId: post.id})}>
+                                    <Image style={{width:22 , height: 22}} source={require('../../assets/icons/user-icon.png')}></Image>
+                                </TouchableOpacity>
+                                :
+                                null
+                            }
+                            <Image style={{width:"100%" , aspectRatio:1}}  resizeMode="cover" source={{uri:post.image}}></Image>
+                        </View>
                     </View> */}
+                    <View>
+                        <Image style={{width:"100%" , aspectRatio:1}}  resizeMode="cover" source={{uri:post.image}}></Image>
+                    </View>
                     <View style={{flexDirection:"row", flex: 1, padding:10}}>
                         <View style={{flexDirection:"row" , width:"33%"}}>
                             <TouchableOpacity onPress={()=>console.log(post.id)}>
@@ -119,7 +122,7 @@ export default function Home({navigation} : any) {
                                     <Text>{comment.comment}</Text>
                                 </Text>
                             ))} */}
-                        <Text style={{color:"gray"}}>{post.createdAt.toDateString()}</Text>
+                        {/* <Text style={{color:"gray"}}>{post.createdAt.toDateString()}</Text> */}
                     </View>
                 </View>
                 ))}
