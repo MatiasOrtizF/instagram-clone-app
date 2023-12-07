@@ -5,7 +5,7 @@ import homeData from '../data/home-data.json'
 import { useEffect, useState } from 'react';
 import { usePost } from '../hooks/postContext';
 
-export default function Home({navigation} : any) {
+export default function Home({navigation}: any) {
     const {getAllPosts, posts} = usePost();
 
     useEffect(()=> {

@@ -14,11 +14,34 @@ export interface User {
     numberFollowing: number
 }
 
+export interface UserLoginData {
+    userName: string,
+    password: string
+}
+
+export interface UserData {
+    id: number,
+    description: string,
+    email: string,
+    name: string,
+    lastName: string,
+    password: string,
+    userName: string,
+    link: string,
+    verified: boolean,
+    numberFollowers: number,
+    numberFollowing: number,
+    numberPost: number,
+    imageProfile: string
+}
+
 export interface Post {
     id: number,
     user: User,
     content: string,
     createdAt: Date,
     likes: number,
-    image: string
+    image: string,
+    liked: boolean,
+    saved: boolean
 }
