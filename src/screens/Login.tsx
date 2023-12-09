@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { UserLoginData } from '../types';
 import { login } from '../service/LoginService';
 
-export default function Login() {
+export default function Login({navigation}: any) {
     const { setConfig , setIsSinged , setUserData} = usePost();
 
     const [userName, setUserName] = useState<string>("");
@@ -53,7 +53,7 @@ export default function Login() {
                         <Text style={{alignSelf: "center", color: "white"}}>Log in</Text>
                     </TouchableOpacity>
                 </View>
-                <Text style={{alignSelf: "center"}}>Don`t have an account ? <Text style={{color: "blue"}} onPress={()=> {console.log("hola")}}>Sign Up.</Text></Text>
+                <Text style={{alignSelf: "center"}}>Don`t have an account ? <Text style={{color: "blue"}} onPress={()=> navigation.navigate('SignUp')}>Sign Up.</Text></Text>
             </View>
         </View>
     );

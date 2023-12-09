@@ -3,9 +3,10 @@ import { AxiosRequestConfig } from "axios";
 import { Post, UserData } from "../types/index";
 import { post } from "../service/PostService";
 import { save } from "../service/SaveService";
+import { like } from "../service/LikeService";
 
 export const PostContext = createContext({
-    isSinged: true,
+    isSinged: false,
     setIsSinged: (value: boolean)=> {},
     userData: {} as UserData,
     setUserData: (value: UserData)=> {},
@@ -21,7 +22,7 @@ interface Props {
 
 export function PostProvider({children}: Props) {
     const [loading, setLoading] = useState<boolean>(true);
-    const [isSinged, setIsSinged] = useState<boolean>(true);
+    const [isSinged, setIsSinged] = useState<boolean>(false);
     const [userData, setUserData] = useState<UserData>({
         id: 0,
         description: '',
@@ -35,7 +36,7 @@ export function PostProvider({children}: Props) {
         numberFollowing: 0,
         numberPost: 0,
         imageProfile: '',
-        link: ''
+        link: '',
     })
     const [posts, setPosts] = useState([]);
     const [config, setConfig] = useState<AxiosRequestConfig>({
@@ -57,6 +58,9 @@ export function PostProvider({children}: Props) {
     const getAllPosts = () => {
         post.getAllPosts(config).then(response=> {
             setPosts(response.data);
+            // const postData = response.data.map((item: any) => item.id)
+            // const booleanLiked = likedPost(postData)
+            // console.log(postData);
         }).catch(error=> {
             if(error.response.status === 401) {
                 alert("Your session has expired. Please log in again.");
@@ -71,6 +75,15 @@ export function PostProvider({children}: Props) {
             
         }).catch(error=> {
             console.log(error);
+        })
+    }
+
+    //likes
+    const likedPost = (postId: number) => {
+        like.likedPost(config, postId).then(response=> {
+            console.log(response.data);
+        }).catch(error=> {
+            console.log("error");
         })
     }
 

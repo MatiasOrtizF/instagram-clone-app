@@ -64,11 +64,11 @@ export default function Home({navigation}: any) {
                     <View style={{flexDirection:"row", flex: 1, padding:10}}>
                         <View style={{flexDirection:"row" , width:"33%"}}>
                             <TouchableOpacity onPress={()=>console.log(post.id)}>
-                                {/* {post.like ?
+                                {post.liked ?
                                     <Image style={{width:27 , height:27}} source={require('../../assets/icons/like-actived-icon.png')}></Image>
                                     :
                                     <Image style={{width:27 , height:27}} source={require('../../assets/icons/like-icon.png')}></Image>
-                                } */}
+                                }
                             </TouchableOpacity>
                             <TouchableOpacity onPress={()=> console.log(post.id)}>
                                 <Image style={{width:25,height:25 , marginLeft:20}} source={require('../../assets/icons/comentary-icon.png')}></Image>
@@ -82,11 +82,11 @@ export default function Home({navigation}: any) {
                         </View>
                         <View style={{width:"33%", alignItems:"flex-end"}}>
                             <TouchableOpacity onPress={()=>console.log(post.id) }>
-                                {/* {post.saved?
+                                {post.saved?
                                     <Image style={styles.icons} source={require('../../assets/icons/save-actived-icon.png')}></Image>
                                     :
                                     <Image style={styles.icons} source={require('../../assets/icons/save-icon.png')}></Image>
-                                } */}
+                                }
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -122,7 +122,7 @@ export default function Home({navigation}: any) {
                                     <Text>{comment.comment}</Text>
                                 </Text>
                             ))} */}
-                        {/* <Text style={{color:"gray"}}>{post.createdAt.toDateString()}</Text> */}
+                        <Text style={{color:"gray"}}>{post.createdAt.toString()}</Text>
                     </View>
                 </View>
                 ))}

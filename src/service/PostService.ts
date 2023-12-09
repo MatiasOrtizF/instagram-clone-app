@@ -5,7 +5,6 @@ const endpoint = "post";
 
 export const post = {
     getAllPosts: function(config: AxiosRequestConfig) {
-        // console.log("holanda");
         return instance.get(endpoint, config);
     }
 }
