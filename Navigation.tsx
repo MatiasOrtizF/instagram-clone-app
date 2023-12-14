@@ -13,6 +13,7 @@ import Login from './src/screens/Login';
 import SignUp from './src/screens/SignUp';
 import EditProfile from './src/screens/EditProfile';
 import SearchDetail from './src/screens/SearchDetail';
+import SearchUser from './src/screens/SearchUser';
 
 const Tab = createBottomTabNavigator();
 
@@ -74,7 +75,8 @@ export default function Navigation() {
             <Stack.Navigator>
                 <Stack.Screen name="TabNavigation" component={TabNavigation} options={{headerShown: false}}/>
                 <Stack.Screen name="EditProfile" component={EditProfile}/>
-                <Stack.Screen name="SearchDetail" component={SearchDetail}/>
+                <Stack.Screen name="SearchDetail" component={SearchDetail} options={{headerTitle: "Explore"}}/>
+                <Stack.Screen name="SearchUser" component={SearchUser}/>
             </Stack.Navigator>
         </NavigationContainer>
     );

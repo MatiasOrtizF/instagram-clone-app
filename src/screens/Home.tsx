@@ -128,7 +128,6 @@ export default function Home({navigation}: any) {
                 ))}
                 {/* Fin Post */}
 
-
                 {/* <Labelled/> */}
 
             </ScrollView>

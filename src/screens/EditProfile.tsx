@@ -9,7 +9,7 @@ export default function EditProfile() {
     const { userData } = usePost();
 
     const [image, setImage] = useState(userData?.imageProfile);
-    const [nameInput , setNameInput] = useState(userData?.name)
+    const [nameInput , setNameInput] = useState(userData?.name + " " + userData?.lastName)
     const [userNameInput , setUserNameInput] = useState(userData?.userName)
     const [bioInput , setBioput] = useState(userData?.description)
     const [linkInput , setLinkInput] = useState(userData?.link)

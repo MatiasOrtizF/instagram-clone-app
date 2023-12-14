@@ -6,13 +6,16 @@ import { save } from "../service/SaveService";
 import { like } from "../service/LikeService";
 
 export const PostContext = createContext({
-    isSinged: false,
+    isSinged: false, //chage to false
     setIsSinged: (value: boolean)=> {},
     userData: {} as UserData,
     setUserData: (value: UserData)=> {},
+    allMyPosts: [] as Post[],
     posts: [] as Post[],
     setConfig: (config: AxiosRequestConfig)=> {},
+    logOut: ()=> {},
     getAllPosts: ()=> {},
+    getAllMyPosts: ()=> {},
     getAllSave: ()=> {}
 });
 
@@ -21,10 +24,10 @@ interface Props {
 }
 
 export function PostProvider({children}: Props) {
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(false);
     const [isSinged, setIsSinged] = useState<boolean>(false);
     const [userData, setUserData] = useState<UserData>({
-        id: 0,
+        id: 0, //change this
         description: '',
         email: '',
         name: '',
@@ -38,6 +41,7 @@ export function PostProvider({children}: Props) {
         imageProfile: '',
         link: '',
     })
+    const [allMyPosts, setAllMyPosts] = useState([]);
     const [posts, setPosts] = useState([]);
     const [config, setConfig] = useState<AxiosRequestConfig>({
         headers: {
@@ -70,6 +74,22 @@ export function PostProvider({children}: Props) {
         })
     }
 
+    const getAllMyPosts = () => {
+        post.getAllPostByUsername(config, userData.userName).then(response=> {
+            setAllMyPosts(response.data);
+            console.log(response.data);
+        }).catch(error=> {
+            if(error.response.status === 401) {
+                alert("Your session has expired. Please log in again.");
+                logOut();
+            }
+            else if(error.response.status === 404) {
+                alert(error.response.data); //User doest not exist
+            }
+            console.log(error);
+        })
+    }
+
     const getAllSave = () => {
         save.getAllSave(config).then(response=> {
             
@@ -93,9 +113,12 @@ export function PostProvider({children}: Props) {
             setIsSinged,
             userData,
             setUserData,
+            allMyPosts,
             posts,
             setConfig,
+            logOut,
             getAllPosts,
+            getAllMyPosts,
             getAllSave
         }}>
             {children}

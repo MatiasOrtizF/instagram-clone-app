@@ -5,7 +5,7 @@ import { UserLoginData } from '../types';
 import { login } from '../service/LoginService';
 
 export default function Login({navigation}: any) {
-    const { setConfig , setIsSinged , setUserData} = usePost();
+    const { setConfig , setIsSinged , setUserData , getAllMyPosts} = usePost();
 
     const [userName, setUserName] = useState<string>("");
     const [password, setPassword] = useState<string>("");

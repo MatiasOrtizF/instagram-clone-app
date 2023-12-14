@@ -13,8 +13,8 @@ export default function SearchDetail({route , navigation}: any) {
             <View>
                 <View style={{flexDirection:"row", margin:10 , justifyContent:"space-between"}}>
                     <View style={{flexDirection:"row" , alignItems:"center"}}>
-                        <Image style={{width:30,height:30 , borderRadius: 100}} source={{uri: post.user.imagePofile}}></Image>
-                        <Text style={{marginLeft:10 , fontWeight: "700"}}>{post.userName}</Text>
+                        <Image style={{width:30,height:30 , borderRadius: 100}} source={{uri: post.user.imageProfile}}></Image>
+                        <Text style={{marginLeft:10 , fontWeight: "700"}}>{post.user.userName}</Text>
                         <Image style={{width:15 , height:15 , marginLeft:5}} source={require('../../assets/icons/verificado-icon.png')} ></Image>
                     </View>
                     {/* agregar el lugar */}
@@ -61,7 +61,8 @@ export default function SearchDetail({route , navigation}: any) {
                     </View>
                 </View>
                 <View style={{marginHorizontal:10}}>
-                    <Text style={{fontWeight: "700"}}>{post.likes} Me gusta</Text>modificar para que se vea asi: (1,123,758)
+                    {/* <Text style={{fontWeight: "700"}}>{post.likes.toString()} Me gusta</Text>  */}
+                    {/*modificar para que se vea asi: (1,123,758 */}
                     <Text numberOfLines={2} ellipsizeMode='tail'>
                         <Text style={{fontWeight: "700"}}>{post.user.userName} </Text>
                         <Text>{post.content}</Text>
@@ -84,7 +85,7 @@ export default function SearchDetail({route , navigation}: any) {
                         :
                         null
                     } */}
-                    <Text style={{color:"gray"}}>{post.createdAt}</Text>
+                    <Text style={{color:"gray"}}>{post.createdAt.toString()}</Text>
                 </View>
             </View>
             {/* Fin Post */}

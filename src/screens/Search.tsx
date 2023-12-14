@@ -5,15 +5,16 @@ import { useNavigation } from '@react-navigation/native';
 // import data from '../../data/search-data.json'
 
 export default function Search() {
-  const { posts } = usePost();
+    const { posts } = usePost();
 
-  const navigation:any = useNavigation(); 
+    const navigation:any = useNavigation(); 
 
     return (
       //agregar un header a flatlist
             <View style={{marginTop: Constants.statusBarHeight , flex:1}}>
                 <View style={{padding:10}}>
                     <TextInput
+                        onPressIn={()=> navigation.navigate('SearchUser')}
                         style={{backgroundColor:"#DADADA" , paddingVertical:5 , paddingHorizontal:10 , borderRadius:10}}
                         placeholder='Buscar'
                     />
