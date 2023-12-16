@@ -45,3 +45,13 @@ export interface Post {
     liked: boolean,
     saved: boolean
 }
+
+export interface Message {
+    name: string,
+    content: string
+}
+
+export interface ChatMessage {
+    message: string,
+    user: string
+}
