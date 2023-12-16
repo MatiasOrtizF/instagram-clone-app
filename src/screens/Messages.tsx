@@ -7,8 +7,10 @@ import { usePost } from '../hooks/postContext';
 import MessageService from '../service/MessageService';
 import { ChatMessage } from '../types';
 
-export default function Messages({navigation}: any) {
+export default function Messages({navigation: {goBack}}: any) {
+    const { userData } = usePost();
     const [messages, setMessages] = useState([]);
+    const [input, setInput] = useState("");
 
     const socketRef = useRef(null);
 
@@ -68,10 +70,11 @@ export default function Messages({navigation}: any) {
 
         const sendMessage = () => {
             const chatMessage: ChatMessage = {
-                user: 'enzojfernandez',
-                message: "hola, mensaje de prueba",
+                user: userData.userName,
+                message: input,
             }
         MessageService.sendMessages("ABC", chatMessage)
+        setInput("");
     }
     
       //   // Enviar el mensaje al servidor usando WebSocket
@@ -82,24 +85,78 @@ export default function Messages({navigation}: any) {
       // };
 
     return (
-        <View>
-            <Text>Mensajes</Text>
-            {messages?.map((message, index)=> (
-                <Text key={index}>{message.user}</Text>
-                <Text key={index}>{message.message}</Text>
-            ))}
-            {/*<FlatList
-                data={messages}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item }) => (
-                <View>
-                    <Text>{item.userName}: {item.content}</Text>
+        <View style={{marginTop: Constants.statusBarHeight , backgroundColor:"white" , flex:1}}>
+            <View style={{paddingHorizontal:15 , paddingVertical:10 , backgroundColor:"#9D9D9D" , height:55}}>
+                <View style={{flexDirection:"row" , alignItems:"center"}}>
+                    <TouchableOpacity onPress={()=> goBack()}>
+                        <Image source={require('../../assets/icons/back-icon.png')}/>
+                    </TouchableOpacity>
+                    <View style={{flexDirection:"row" , marginLeft:5}}>
+                        {/* image de perfil */}
+                        <Image style={{width:35 , height:35 , borderRadius:100 , marginRight:15}} source={{uri: ""}}></Image>
+                        <View>
+                            <Text style={{fontWeight:"700" , color:"white"}}>name</Text>
+                            <Text>user name</Text>
+                        </View>
+                    </View>
                 </View>
-                )}
-            /> */}
-            <TouchableOpacity onPress={()=> sendMessage()} style={{backgroundColor: "black", alignSelf: "flex-end", padding: 10}}>
-                <Text style={{color: "white"}}>Send</Text>
-            </TouchableOpacity>
+            </View>
+            <View style={{flex:1}}>
+                <ScrollView contentOffset={{y:10000}}>
+                    {messages.map((chat, index) => (
+                        <View key={index} style={{paddingHorizontal:15 , paddingVertical:2 }}>
+                            {chat.user == userData.userName?
+                                <View style={{backgroundColor:"#6192D7" , alignSelf:"flex-end" , padding:7 , borderRadius:10}}>
+                                    <Text style={{color:"white" , margin:5}}>{chat.message}</Text>
+                                </View>
+                                :
+                                <View style={{backgroundColor:"#DBDBDB" , alignSelf:"flex-start" , padding:7 , borderRadius:10}}>
+                                    <Text>{chat.message}</Text>
+                                </View>
+                            }
+                        </View>
+                    ))}
+                </ScrollView>
+            </View>
+            <View style={{width:"100%" , height:50}}>
+                <View style={{backgroundColor:"#DBDBDB" , flexDirection:"row" , justifyContent:"space-between" , borderRadius:10 , padding:7 , marginHorizontal:15}}>
+                    <TextInput
+                        style={{width:"79%"}}
+                        placeholder='Message...'
+                        multiline
+                        onChangeText={setInput}
+                        value={input}
+                    />
+                    <View style={{width:"20%" , justifyContent:"flex-end"}}>
+                        <TouchableOpacity style={{backgroundColor:"#6192D7" , paddingVertical:7 , borderRadius:7}} onPress={()=> sendMessage()}>
+                            <Text style={{color:"white" , alignSelf:"center"}}>
+                                Send
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
         </View>
+        // <View>
+        //     <Text>Mensajes</Text>
+        //     {messages?.map((message, index)=> (
+        //         <View key={index}>
+        //             <Text>{message.user}</Text>
+        //             <Text>{message.message}</Text>
+        //         </View>
+        //     ))}
+        //     {/*<FlatList
+        //         data={messages}
+        //         keyExtractor={(item, index) => index.toString()}
+        //         renderItem={({ item }) => (
+        //         <View>
+        //             <Text>{item.userName}: {item.content}</Text>
+        //         </View>
+        //         )}
+        //     /> */}
+        //     <TouchableOpacity onPress={()=> sendMessage()} style={{backgroundColor: "black", alignSelf: "flex-end", padding: 10}}>
+        //         <Text style={{color: "white"}}>Send</Text>
+        //     </TouchableOpacity>
+        // </View>
     );
 }

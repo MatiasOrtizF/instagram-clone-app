@@ -75,7 +75,7 @@ export default function Navigation() {
         <NavigationContainer>
             <Stack.Navigator>
                 <Stack.Screen name="TabNavigation" component={TabNavigation} options={{headerShown: false}}/>
-                <Stack.Screen name="Messages" component={Messages}/> 
+                <Stack.Screen name="Messages" component={Messages} options={{headerShown: false}}/> 
                 <Stack.Screen name="EditProfile" component={EditProfile}/>
                 <Stack.Screen name="SearchDetail" component={SearchDetail} options={{headerTitle: "Explore"}}/>
                 <Stack.Screen name="SearchUser" component={SearchUser}/>

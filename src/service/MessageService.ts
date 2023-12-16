@@ -35,7 +35,6 @@ class ChatService {
                  // Llamar a los callbacks registrados cuando llega un nuevo mensaje
             this.messageCallbacks.forEach((callback) => {
                 callback(messageContent);
-                console.log("mira esto:" + messageContent)
               });
             } catch (error) {
               console.error('Error parsing message body:', error);
