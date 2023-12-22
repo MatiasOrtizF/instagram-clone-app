@@ -56,7 +56,7 @@ function TabNavigation() {
                     tabBarShowLabel: false,
                     tabBarIcon: ({focused}) => (
                         <Image
-                            source={{uri:userData.imageProfile}}
+                            source={userData.imageProfile ? {uri:userData.imageProfile} : require('./assets/icons/image-profile-default-icon.png')}
                             style={{width:30 , height:30 , borderRadius:100 , borderWidth:2 , borderColor: focused ? "black" : undefined}}
                         />
                     )
