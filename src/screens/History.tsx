@@ -7,12 +7,12 @@ import HistoryUserList from '../components/HistoryUserList';
 // import data from '../../data/search-data.json'
 
 export default function History() {
-    const { getAllHistory , historyUserSearch } = usePost();
+    const { getAllHistorySearch , historyUserSearch } = usePost();
 
     const navigation:any = useNavigation(); 
 
     useEffect(()=> {
-        getAllHistory();
+        getAllHistorySearch();
     }, [])
 
     return (

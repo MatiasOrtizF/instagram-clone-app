@@ -17,7 +17,7 @@ export default React.memo(function PostList({id, user, image, liked, saved, like
     }, [])
 
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-    const snapPoints = ["35%"];
+    const snapPoints = ["35%", "95%"];
 
     function handlePresentModal() {
         bottomSheetModalRef.current?.present();
@@ -102,7 +102,7 @@ export default React.memo(function PostList({id, user, image, liked, saved, like
                     failOffsetX={[-5, 5]}
                     ref={bottomSheetModalRef}
                     index={0}
-                    snapPoints={[245]}
+                    snapPoints={snapPoints}
                     backgroundStyle={{ borderRadius: 50, borderWidth: 4 }}
                 >
                     <Modal/>

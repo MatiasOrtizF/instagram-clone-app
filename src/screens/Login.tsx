@@ -25,13 +25,13 @@ export default function Login({navigation}: any) {
                 alert(error.response.data);
             } else if(error.response.status === 400) {
                 alert(error.response.data);
-            } else {
-                console.error("Error:", error);
-            }
+            } 
+            console.error("Error:", error);
         })
     }
 
     return (
+        <>
         <View style={{flex: 1, justifyContent: "center", alignItems: "center", padding: 20}}>
             <View style={{width: "100%"}}>
                 <Text style={{fontSize:20, alignSelf: "center"}}>INSTAGRAM</Text>
@@ -53,8 +53,9 @@ export default function Login({navigation}: any) {
                         <Text style={{alignSelf: "center", color: "white"}}>Log in</Text>
                     </TouchableOpacity>
                 </View>
-                <Text style={{alignSelf: "center"}}>Don`t have an account ? <Text style={{color: "blue"}} onPress={()=> navigation.navigate('SignUp')}>Sign Up.</Text></Text>
+                <Text style={{alignSelf: "center"}}>Don`t have an account ? <Text style={{color: "blue"}} onPress={()=> console.log("hola")}>Sign Up.</Text></Text>
             </View>
         </View>
+        </>
     );
 }

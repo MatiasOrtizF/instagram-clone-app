@@ -19,7 +19,7 @@ export const PostContext = createContext({
     getAllPosts: ()=> {},
     getAllMyPosts: ()=> {},
     getAllSave: ()=> {},
-    getAllHistory: ()=> {}
+    getAllHistorySearch: ()=> {}
 });
 
 interface Props {
@@ -112,7 +112,7 @@ export function PostProvider({children}: Props) {
         })
     }
 
-    const getAllHistory = () => {
+    const getAllHistorySearch = () => {
         history.getHistory(config).then(response=> {
             setHistoryUserSearch(response.data);
         }).catch(error=> {
@@ -134,7 +134,7 @@ export function PostProvider({children}: Props) {
             getAllPosts,
             getAllMyPosts,
             getAllSave,
-            getAllHistory
+            getAllHistorySearch
         }}>
             {children}
         </PostContext.Provider>
