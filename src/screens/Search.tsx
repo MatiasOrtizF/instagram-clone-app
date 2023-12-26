@@ -14,7 +14,7 @@ export default function Search() {
             <View style={{marginTop: Constants.statusBarHeight , flex:1}}>
                 <View style={{padding:10}}>
                     <TextInput
-                        onPressIn={()=> navigation.navigate('SearchUser')}
+                        onPressIn={()=> navigation.navigate('History')}
                         style={{backgroundColor:"#DADADA" , paddingVertical:5 , paddingHorizontal:10 , borderRadius:10}}
                         placeholder='Buscar'
                     />

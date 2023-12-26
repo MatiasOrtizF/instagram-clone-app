@@ -39,8 +39,6 @@ export default function Home({navigation}: any) {
                 </View>
 
                     <View style={{ backgroundColor: 'gray', height: 0.5 }} />
-
-                    {/* Post */}
                     <FlatList
                         data={posts}
                         renderItem={( {item}: {item: Post})=> (
@@ -49,9 +47,6 @@ export default function Home({navigation}: any) {
                         showsVerticalScrollIndicator={false}
                         keyExtractor={item=> item.id.toString()}
                     />
-                    {/* Fin Post */}
-
-                    {/* <Labelled/> */}
             </View>
         </BottomSheetModalProvider>
     );

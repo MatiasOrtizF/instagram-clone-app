@@ -1,15 +1,15 @@
-import { Text, View , Image , ScrollView , TextInput , TouchableOpacity, ImageBackground , StyleSheet , Dimensions } from 'react-native';
+import { Text, View , Image , ScrollView , TextInput , TouchableOpacity, ImageBackground , StyleSheet , Dimensions , TouchableWithoutFeedback } from 'react-native';
 import Constants from 'expo-constants'
 import styles from '../styles/Styles';
 import homeData from '../data/home-data.json'
 import { useEffect, useRef, useState } from 'react';
 import { usePost } from '../hooks/postContext';
-import { BottomSheetModal, BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import Modal from '../components/Modal';
 import React from 'react';
 import { Post } from '../types';
 
-export default React.memo(function MotorcycleList({id, user, image, liked, saved, likes, content, createdAt }: Post) {
+export default React.memo(function PostList({id, user, image, liked, saved, likes, content, createdAt }: Post) {
     const {getAllPosts, posts} = usePost();
 
     useEffect(()=> {
@@ -43,9 +43,9 @@ export default React.memo(function MotorcycleList({id, user, image, liked, saved
                                 <Image style={{width:27 , height:27}} source={require('../../assets/icons/like-icon.png')}></Image>
                             }
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={handlePresentModal}>
+                        <TouchableWithoutFeedback  onPress={handlePresentModal}>
                             <Image style={{width:25,height:25 , marginLeft:20}} source={require('../../assets/icons/comentary-icon.png')}></Image>
-                        </TouchableOpacity>
+                        </TouchableWithoutFeedback>
                     </View>
                     <View style={{alignItems:"center" , width:"33%" , flexDirection:"row" , justifyContent:"center"}}>
                         {/* {post.images.map((img) => (

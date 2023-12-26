@@ -4,6 +4,7 @@ import { Post, UserData } from "../types/index";
 import { post } from "../service/PostService";
 import { save } from "../service/SaveService";
 import { like } from "../service/LikeService";
+import { history } from "../service/HistoryService";
 
 export const PostContext = createContext({
     isSinged: false, //chage to false
@@ -12,11 +13,13 @@ export const PostContext = createContext({
     setUserData: (value: UserData)=> {},
     allMyPosts: [] as Post[],
     posts: [] as Post[],
+    historyUserSearch: [],
     setConfig: (config: AxiosRequestConfig)=> {},
     logOut: ()=> {},
     getAllPosts: ()=> {},
     getAllMyPosts: ()=> {},
-    getAllSave: ()=> {}
+    getAllSave: ()=> {},
+    getAllHistory: ()=> {}
 });
 
 interface Props {
@@ -49,6 +52,8 @@ export function PostProvider({children}: Props) {
             'Content-Type': 'application/json'
         }
     })
+    //History
+    const [historyUserSearch, setHistoryUserSearch] = useState([]);
 
     useEffect(()=> {
         getAllSave();
@@ -103,7 +108,15 @@ export function PostProvider({children}: Props) {
         like.likedPost(config, postId).then(response=> {
             console.log(response.data);
         }).catch(error=> {
-            console.log("error");
+            console.log(error);
+        })
+    }
+
+    const getAllHistory = () => {
+        history.getHistory(config).then(response=> {
+            setHistoryUserSearch(response.data);
+        }).catch(error=> {
+            console.log(error);
         })
     }
 
@@ -115,11 +128,13 @@ export function PostProvider({children}: Props) {
             setUserData,
             allMyPosts,
             posts,
+            historyUserSearch,
             setConfig,
             logOut,
             getAllPosts,
             getAllMyPosts,
-            getAllSave
+            getAllSave,
+            getAllHistory
         }}>
             {children}
         </PostContext.Provider>
