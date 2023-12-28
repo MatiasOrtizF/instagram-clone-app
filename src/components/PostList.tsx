@@ -105,7 +105,7 @@ export default React.memo(function PostList({id, user, image, liked, saved, like
                     snapPoints={snapPoints}
                     backgroundStyle={{ borderRadius: 50, borderWidth: 4 }}
                 >
-                    <Modal/>
+                    <Modal postId={id}/>
                 </BottomSheetModal>
             </View>
     )

@@ -46,6 +46,15 @@ export interface Post {
     saved: boolean
 }
 
+export interface Comment {
+    id: number,
+    user: User,
+    content: string,
+    createdAt: Date,
+    likes: number,
+    liked: boolean,
+}
+
 export interface Message {
     name: string,
     content: string

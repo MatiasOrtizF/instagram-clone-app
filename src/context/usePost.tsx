@@ -5,6 +5,7 @@ import { post } from "../service/PostService";
 import { save } from "../service/SaveService";
 import { like } from "../service/LikeService";
 import { history } from "../service/HistoryService";
+import { comment } from "../service/CommentService";
 
 export const PostContext = createContext({
     isSinged: false, //chage to false
@@ -14,12 +15,14 @@ export const PostContext = createContext({
     allMyPosts: [] as Post[],
     posts: [] as Post[],
     historyUserSearch: [],
+    comments: [] as Comment[],
     setConfig: (config: AxiosRequestConfig)=> {},
     logOut: ()=> {},
     getAllPosts: ()=> {},
     getAllMyPosts: ()=> {},
     getAllSave: ()=> {},
-    getAllHistorySearch: ()=> {}
+    getAllHistorySearch: ()=> {},
+    getAllComments: (postId: any)=> {}
 });
 
 interface Props {
@@ -54,6 +57,7 @@ export function PostProvider({children}: Props) {
     })
     //History
     const [historyUserSearch, setHistoryUserSearch] = useState([]);
+    const [comments, setComments] = useState([]);
 
     useEffect(()=> {
         getAllSave();
@@ -120,6 +124,14 @@ export function PostProvider({children}: Props) {
         })
     }
 
+    const getAllComments = (postId: any) => {
+        comment.getAllCommentByPost(config, postId).then(response=> {
+            setComments(response.data);
+        }).catch(error=> {
+            console.log(error);
+        })
+    }
+
     return(
         <PostContext.Provider value={{
             isSinged,
@@ -129,12 +141,14 @@ export function PostProvider({children}: Props) {
             allMyPosts,
             posts,
             historyUserSearch,
+            comments,
             setConfig,
             logOut,
             getAllPosts,
             getAllMyPosts,
             getAllSave,
-            getAllHistorySearch
+            getAllHistorySearch,
+            getAllComments
         }}>
             {children}
         </PostContext.Provider>
