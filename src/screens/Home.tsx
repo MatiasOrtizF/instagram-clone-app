@@ -9,6 +9,7 @@ import Modal from '../components/Modal';
 import { FlatList } from 'react-native-gesture-handler';
 import PostList from '../components/PostList';
 import { Post } from '../types';
+import Hr from '../components/Hr';
 
 export default function Home({navigation}: any) {
     const {getAllPosts, posts} = usePost();
@@ -38,7 +39,7 @@ export default function Home({navigation}: any) {
                     </View>
                 </View>
 
-                    <View style={{ backgroundColor: 'gray', height: 0.5 }} />
+                    <Hr/>
                     <FlatList
                         data={posts}
                         renderItem={( {item}: {item: Post})=> (

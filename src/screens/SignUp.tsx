@@ -29,30 +29,35 @@ export default function SignUp({navigation}: any) {
                         placeholder='Name'
                         onChangeText={setName}
                         onSubmitEditing={createUser}
+                        autoCapitalize='none'
                     />
                     <TextInput
                         style={{backgroundColor: "#dfdfdf", color: "black", paddingVertical: 5, paddingHorizontal: 10, borderRadius: 10}}
                         placeholder='Last Name'
                         onChangeText={setLastName}
                         onSubmitEditing={createUser}
+                        autoCapitalize='none'
                     />
                     <TextInput
                         style={{backgroundColor: "#dfdfdf", color: "black", paddingVertical: 5, paddingHorizontal: 10, borderRadius: 10}}
                         placeholder='Username'
                         onChangeText={setUserName}
                         onSubmitEditing={createUser}
+                        autoCapitalize='none'
                     />
                     <TextInput
                         style={{backgroundColor: "#dfdfdf", color: "black", paddingVertical: 5, paddingHorizontal: 10, borderRadius: 10}}
                         placeholder='Email'
                         onChangeText={setEmail}
                         onSubmitEditing={createUser}
+                        autoCapitalize='none'
                     />
                     <TextInput
                         style={{backgroundColor: "#dfdfdf", color: "black", paddingVertical: 5, paddingHorizontal: 10, borderRadius: 10}}
                         placeholder='Password'
                         onChangeText={setPassword}
                         onSubmitEditing={createUser}
+                        autoCapitalize='none'
                         secureTextEntry={true}
                     />
                     <TextInput
@@ -60,6 +65,7 @@ export default function SignUp({navigation}: any) {
                         placeholder='Confirm Password'
                         onChangeText={setConfirmPassword}
                         onSubmitEditing={createUser}
+                        autoCapitalize='none'
                         secureTextEntry={true}
                     />
                     <TouchableOpacity onPress={()=> createUser()} style={{backgroundColor: "blue", padding: 10, borderRadius: 10}}> 

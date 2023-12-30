@@ -1,18 +1,24 @@
 import { useEffect } from 'react';
-import { Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { Text, View, ScrollView, Image, TouchableOpacity, TextInput } from 'react-native';
 import { comment } from '../service/CommentService';
 import { usePost } from '../hooks/postContext';
+import Hr from './Hr';
 
-export default function Modal ({postId}: any) {
-    const {getAllComments, comments} = usePost();
+export default function Modal ({postId, userName, currentPosition}: any) {
+    const {getAllComments, comments, userData} = usePost();
 
     useEffect(()=> {
         getAllComments(postId);
     }, [])
 
+    useEffect(()=> {
+        console.log(currentPosition);
+    }, [currentPosition])
+
     return(
-        <View>
-            <Text style={{alignSelf: "center"}}>Comments</Text>
+        <View style={{flex: currentPosition === 1 ? 1 : 0.7}}>
+            <Text style={{alignSelf: "center", fontWeight: "800", fontSize: 18, paddingVertical: 10}}>Comments</Text>
+            <Hr/>
             <ScrollView showsVerticalScrollIndicator={false} >
 
             {comments.map((comment, index) => 
@@ -34,7 +40,7 @@ export default function Modal ({postId}: any) {
                                         null
                                     }
                                 </View>
-                                <Text numberOfLines={13} ellipsizeMode='tail' style={{color:"black" , marginBottom:5}}>{comment.content}</Text>
+                                <Text numberOfLines={13} ellipsizeMode='tail' style={{color:"black" , marginBottom:5, fontWeight: "500"}}>{comment.content}</Text>
                                 <TouchableOpacity onPress={()=>console.log("reply comment")}>
                                     <Text style={{color:"gray" , fontWeight: "500"}}>Reply</Text>
                                 </TouchableOpacity>
@@ -54,6 +60,22 @@ export default function Modal ({postId}: any) {
                 </View>
             )}
             </ScrollView>
+            <View style={{width: "100%", flexDirection: "row" , alignItems: "center" , justifyContent:"space-between" , marginVertical:7 , paddingHorizontal:15}}>
+                <Image
+                    source={{uri: userData.imageProfile}}
+                    style={{width:40 , height:40 , borderRadius:100 , alignSelf:"flex-end"}}
+                />
+                <TextInput 
+                    style={{ flex: 1, paddingLeft: 10 }}
+                    placeholder={"Add a coment for " + userName + "..."}
+                    // defaultValue={hDataPost[postNumber].userName} --> hacer esto cuando replico
+                    multiline
+                    // onChangeText={setInput}
+                />
+                <TouchableOpacity style={{width:"10%"}} onPress={()=> console.log("add comment")}>
+                    <Text style={{color:"#6192D7" , fontSize:17 , fontWeight: "500"}}>Post</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 }

@@ -41,12 +41,14 @@ export default function Login({navigation}: any) {
                         placeholder='Username'
                         onChangeText={setUserName}
                         onSubmitEditing={validationLogin}
+                        autoCapitalize='none'
                     />
                     <TextInput
                         style={{backgroundColor: "#dfdfdf", color: "black", paddingVertical: 5, paddingHorizontal: 10, borderRadius: 10}}
                         placeholder='Password'
                         onChangeText={setPassword}
                         onSubmitEditing={validationLogin}
+                        autoCapitalize='none'
                         secureTextEntry={true}
                     />
                     <TouchableOpacity onPress={()=> validationLogin()} style={{backgroundColor: "blue", padding: 10, borderRadius: 10}}> 

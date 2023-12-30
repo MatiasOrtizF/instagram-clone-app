@@ -16,12 +16,20 @@ export default React.memo(function PostList({id, user, image, liked, saved, like
         getAllPosts();
     }, [])
 
+    const marginTop = Constants.statusBarHeight;
+    const maxTop =100 - (marginTop /  Dimensions.get('window').height) * 100;
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-    const snapPoints = ["35%", "95%"];
+    const snapPoints = ["70%", `${maxTop}`];
+    const [currentPosition, setCurrentPosition] = useState<number>(0);
 
     function handlePresentModal() {
         bottomSheetModalRef.current?.present();
     }
+
+    const handleSheetPositionChange = (e: any) => {
+        // e.nativeEvent.contentOffset.y te dará la posición Y actual del modal
+        setCurrentPosition(e);
+    };
 
     return (
             <View>
@@ -103,9 +111,10 @@ export default React.memo(function PostList({id, user, image, liked, saved, like
                     ref={bottomSheetModalRef}
                     index={0}
                     snapPoints={snapPoints}
-                    backgroundStyle={{ borderRadius: 50, borderWidth: 4 }}
+                    backgroundStyle={{ borderRadius: 15}}
+                    onChange={handleSheetPositionChange}
                 >
-                    <Modal postId={id}/>
+                    <Modal postId={id} userName={user.userName} currentPosition={currentPosition}/>
                 </BottomSheetModal>
             </View>
     )
