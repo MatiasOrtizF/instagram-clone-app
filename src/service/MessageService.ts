@@ -11,9 +11,9 @@ class ChatService {
     }
 
     initConnectionSocket(): Promise<void> {
-        const url = "//localhost:3000/chat-socket";
+        const url = "//192.168.0.16:3000/chat-socket"; //change this url
         const socket = new SockJS(url);
-        this.stompClient = Stomp.over(socket);
+        this.stompClient = Stomp.over(socket)
     
         return new Promise((resolve, reject) => {
           this.stompClient.connect({}, () => {

@@ -1,11 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Text, View, ScrollView, Image, TouchableOpacity, TextInput } from 'react-native';
 import { comment } from '../service/CommentService';
 import { usePost } from '../hooks/postContext';
 import Hr from './Hr';
 
-export default function Modal ({postId, userName, currentPosition}: any) {
-    const {getAllComments, comments, userData} = usePost();
+export default function Modal ({postId, userName, currentPosition}: {postId: number, userName: string, currentPosition: number}) {
+    const {getAllComments, postComment, comments, userData} = usePost();
+    
+    const [input, setInput] = useState<string>("");
 
     useEffect(()=> {
         getAllComments(postId);
@@ -14,6 +16,19 @@ export default function Modal ({postId, userName, currentPosition}: any) {
     useEffect(()=> {
         console.log(currentPosition);
     }, [currentPosition])
+
+    const sendComment = () => {
+        if(input.trim()) {
+            const commentData = {        
+                post: {
+                    id: postId
+                },
+                content: input,
+            }
+            postComment(commentData, postId);
+            setInput("");
+        }
+    }
 
     return(
         <View style={{flex: currentPosition === 1 ? 1 : 0.7}}>
@@ -70,9 +85,9 @@ export default function Modal ({postId, userName, currentPosition}: any) {
                     placeholder={"Add a coment for " + userName + "..."}
                     // defaultValue={hDataPost[postNumber].userName} --> hacer esto cuando replico
                     multiline
-                    // onChangeText={setInput}
+                    onChangeText={setInput}
                 />
-                <TouchableOpacity style={{width:"10%"}} onPress={()=> console.log("add comment")}>
+                <TouchableOpacity style={{width:"10%"}} onPress={()=> sendComment()}>
                     <Text style={{color:"#6192D7" , fontSize:17 , fontWeight: "500"}}>Post</Text>
                 </TouchableOpacity>
             </View>

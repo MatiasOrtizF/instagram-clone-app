@@ -9,7 +9,7 @@ import { ChatMessage } from '../types';
 
 export default function Messages({navigation: {goBack}}: any) {
     const { userData } = usePost();
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [input, setInput] = useState("");
 
     const socketRef = useRef(null);
@@ -77,6 +77,7 @@ export default function Messages({navigation: {goBack}}: any) {
         setInput("");
     }
     
+    
       //   // Enviar el mensaje al servidor usando WebSocket
       //   if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
       //     socketRef.current.send(JSON.stringify(message));
@@ -93,7 +94,7 @@ export default function Messages({navigation: {goBack}}: any) {
                     </TouchableOpacity>
                     <View style={{flexDirection:"row" , marginLeft:5}}>
                         {/* image de perfil */}
-                        <Image style={{width:35 , height:35 , borderRadius:100 , marginRight:15}} source={{uri: ""}}></Image>
+                        <Image style={{width:35 , height:35 , borderRadius:100 , marginRight:15}} source={{uri: "https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg"}}></Image>
                         <View>
                             <Text style={{fontWeight:"700" , color:"white"}}>name</Text>
                             <Text>user name</Text>
@@ -102,7 +103,7 @@ export default function Messages({navigation: {goBack}}: any) {
                 </View>
             </View>
             <View style={{flex:1}}>
-                <ScrollView contentOffset={{y:10000}}>
+                <ScrollView contentOffset={{y: 10000}}>
                     {messages.map((chat, index) => (
                         <View key={index} style={{paddingHorizontal:15 , paddingVertical:2 }}>
                             {chat.user == userData.userName?

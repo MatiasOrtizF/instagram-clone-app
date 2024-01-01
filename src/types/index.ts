@@ -41,6 +41,7 @@ export interface Post {
     content: string,
     createdAt: Date,
     likes: number,
+    comments: number, // add in PostList
     image: string,
     liked: boolean,
     saved: boolean
@@ -63,4 +64,11 @@ export interface Message {
 export interface ChatMessage {
     message: string,
     user: string
+}
+
+export interface CommentData {       
+    post: {
+        id: number
+    } 
+    content: string,
 }

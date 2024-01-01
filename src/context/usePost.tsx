@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { AxiosRequestConfig } from "axios";
-import { Comment, Post, UserData } from "../types/index";
+import { Comment, CommentData, Post, UserData } from "../types/index";
 import { post } from "../service/PostService";
 import { save } from "../service/SaveService";
 import { like } from "../service/LikeService";
@@ -22,7 +22,8 @@ export const PostContext = createContext({
     getAllMyPosts: ()=> {},
     getAllSave: ()=> {},
     getAllHistorySearch: ()=> {},
-    getAllComments: (postId: any)=> {}
+    getAllComments: (postId: any)=> {},
+    postComment: (commentData: CommentData, postId: any)=> {}
 });
 
 interface Props {
@@ -124,9 +125,18 @@ export function PostProvider({children}: Props) {
         })
     }
 
+    //comments
     const getAllComments = (postId: any) => {
         comment.getAllCommentByPost(config, postId).then(response=> {
             setComments(response.data);
+        }).catch(error=> {
+            console.log(error);
+        })
+    }
+
+    const postComment = (commentData: CommentData, postId: any) => {
+        comment.postComment(config, commentData).then(response=> {
+            getAllComments(postId);
         }).catch(error=> {
             console.log(error);
         })
@@ -148,7 +158,8 @@ export function PostProvider({children}: Props) {
             getAllMyPosts,
             getAllSave,
             getAllHistorySearch,
-            getAllComments
+            getAllComments,
+            postComment
         }}>
             {children}
         </PostContext.Provider>

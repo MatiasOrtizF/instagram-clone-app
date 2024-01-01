@@ -2,12 +2,13 @@ import { Text, View , Image , ScrollView , TextInput , TouchableOpacity, ImageBa
 import Constants from 'expo-constants'
 import styles from '../styles/Styles';
 import homeData from '../data/home-data.json'
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import { usePost } from '../hooks/postContext';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetFlatList , BottomSheetModal, BottomSheetModalProvider  } from "@gorhom/bottom-sheet";
 import Modal from '../components/Modal';
 import React from 'react';
 import { Post } from '../types';
+import CommentsModal from './CommentsModal';
 
 export default React.memo(function PostList({id, user, image, liked, saved, likes, content, createdAt }: Post) {
     const {getAllPosts, posts} = usePost();
@@ -18,8 +19,8 @@ export default React.memo(function PostList({id, user, image, liked, saved, like
 
     const marginTop = Constants.statusBarHeight;
     const maxTop =100 - (marginTop /  Dimensions.get('window').height) * 100;
-    const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-    const snapPoints = ["70%", `${maxTop}`];
+    const bottomSheetModalRef = useRef<BottomSheetModal >(null);
+    const snapPoints = ["70%"];
     const [currentPosition, setCurrentPosition] = useState<number>(0);
 
     function handlePresentModal() {
@@ -30,6 +31,42 @@ export default React.memo(function PostList({id, user, image, liked, saved, like
         // e.nativeEvent.contentOffset.y te dará la posición Y actual del modal
         setCurrentPosition(e);
     };
+
+    // const flatListRef = useRef<BottomSheetFlatListMethods>(null);
+
+    const sheetRef = useRef<BottomSheet>(null);
+
+    const data = useMemo(
+        () =>
+            Array(100)
+                .fill(0)
+                .map((_, index) => `index-${index}`),
+        []
+    );
+
+    const newSnapPoints = useMemo(() => ["25%", "50%", "100%"], []);
+
+    // callbacks
+    const handleSheetChange = useCallback((index: any) => {
+        console.log("handleSheetChange", index);
+    }, []);
+    const handleSnapPress = useCallback((index: any) => {
+        sheetRef.current?.snapToIndex(index);
+    }, []);
+    const handleClosePress = useCallback(() => {
+        sheetRef.current?.close();
+    }, []);
+
+
+    // render
+    const renderItem = useCallback(
+        ({ item }: any) => (
+        <View>
+            <Text>{item}</Text>
+        </View>
+        ),
+        []
+    );
 
     return (
             <View>
@@ -106,15 +143,12 @@ export default React.memo(function PostList({id, user, image, liked, saved, like
                     <Text style={{color:"gray"}}>{createdAt.toString()}</Text>
                 </View>
                 <BottomSheetModal
-                    activeOffsetY={[-1, 1]}
-                    failOffsetX={[-5, 5]}
                     ref={bottomSheetModalRef}
                     index={0}
                     snapPoints={snapPoints}
-                    backgroundStyle={{ borderRadius: 15}}
-                    onChange={handleSheetPositionChange}
+                    enablePanDownToClose={true}
                 >
-                    <Modal postId={id} userName={user.userName} currentPosition={currentPosition}/>
+                    <CommentsModal postId={id} userName={user.userName}/>
                 </BottomSheetModal>
             </View>
     )
