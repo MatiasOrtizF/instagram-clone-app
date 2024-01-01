@@ -9,73 +9,33 @@ import Modal from '../components/Modal';
 import React from 'react';
 import { Post } from '../types';
 import CommentsModal from './CommentsModal';
+import { useNavigation } from '@react-navigation/native';
 
 export default React.memo(function PostList({id, user, image, liked, saved, likes, content, createdAt }: Post) {
-    const {getAllPosts, posts} = usePost();
+    const { getAllPosts, setUserNameProfile } = usePost();
+    const navigation: any = useNavigation(); 
 
     useEffect(()=> {
         getAllPosts();
     }, [])
 
-    const marginTop = Constants.statusBarHeight;
-    const maxTop =100 - (marginTop /  Dimensions.get('window').height) * 100;
     const bottomSheetModalRef = useRef<BottomSheetModal >(null);
     const snapPoints = ["70%"];
-    const [currentPosition, setCurrentPosition] = useState<number>(0);
 
     function handlePresentModal() {
         bottomSheetModalRef.current?.present();
     }
 
-    const handleSheetPositionChange = (e: any) => {
-        // e.nativeEvent.contentOffset.y te dará la posición Y actual del modal
-        setCurrentPosition(e);
-    };
-
-    // const flatListRef = useRef<BottomSheetFlatListMethods>(null);
-
-    const sheetRef = useRef<BottomSheet>(null);
-
-    const data = useMemo(
-        () =>
-            Array(100)
-                .fill(0)
-                .map((_, index) => `index-${index}`),
-        []
-    );
-
-    const newSnapPoints = useMemo(() => ["25%", "50%", "100%"], []);
-
-    // callbacks
-    const handleSheetChange = useCallback((index: any) => {
-        console.log("handleSheetChange", index);
-    }, []);
-    const handleSnapPress = useCallback((index: any) => {
-        sheetRef.current?.snapToIndex(index);
-    }, []);
-    const handleClosePress = useCallback(() => {
-        sheetRef.current?.close();
-    }, []);
-
-
-    // render
-    const renderItem = useCallback(
-        ({ item }: any) => (
-        <View>
-            <Text>{item}</Text>
-        </View>
-        ),
-        []
-    );
-
     return (
             <View>
-                <View style={{flexDirection:"row" , alignItems:"center" , margin:10}}>
-                    <Image style={{ width: 35, height: 35, borderRadius: 100 }} source={user.imageProfile ? { uri: user.imageProfile } : require('../../assets/icons/image-profile-default-icon.png')} />
-                    <Text style={{marginLeft:10 , fontWeight: "700"}}>{user.userName}</Text>
-                    <Image style={{width:15 , height:15 , marginLeft:5}} source={require('../../assets/icons/verificado-icon.png')} ></Image>
+                <TouchableWithoutFeedback onPress={()=> {setUserNameProfile(user.userName), navigation.navigate("UserProfile", {user: user})}}>
+                    <View style={{flexDirection:"row" , alignItems:"center" , margin:10, alignSelf: "flex-start"}}>
+                        <Image style={{ width: 35, height: 35, borderRadius: 100 }} source={user.imageProfile ? { uri: user.imageProfile } : require('../../assets/icons/image-profile-default-icon.png')} />
+                        <Text style={{marginLeft:10 , fontWeight: "700"}}>{user.userName}</Text>
+                        <Image style={{width:15 , height:15 , marginLeft:5}} source={require('../../assets/icons/verificado-icon.png')} ></Image>
+                    </View>
                     {/* agregar el lugar */}
-                </View>
+                </TouchableWithoutFeedback>
                 <View>
                     <Image style={{width:"100%" , aspectRatio:1}}  resizeMode="cover" source={image ? {uri:image} : require('../../assets/icons/image-profile-default-icon.png')}></Image>
                 </View>

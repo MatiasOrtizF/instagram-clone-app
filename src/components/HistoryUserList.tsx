@@ -11,7 +11,7 @@ import { Post } from '../types';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 
 export default React.memo(function HistoryUserList({ searchedUser }: any) {
-    const navigation:any = useNavigation(); 
+    const navigation: any = useNavigation(); 
 
     return (
             <View style={{flexDirection: "row", alignItems: "center", marginVertical: 5, justifyContent: "space-between"}}>

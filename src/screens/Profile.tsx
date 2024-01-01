@@ -24,8 +24,8 @@ export default function Profile({navigation}: any) {
                                 <Image style={{height:100}} source={{uri:post.image}}></Image>
                             </TouchableHighlight>
                     )}
-                    ListHeaderComponent={          <View>
-                    
+                    ListHeaderComponent={          
+                    <View>
                         <View style={{padding: 10}}>
                             <View style={{flexDirection:"row", justifyContent:"space-between"}}>
                                 <View style={{flexDirection:"row"}}>

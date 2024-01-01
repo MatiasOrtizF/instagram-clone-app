@@ -72,6 +72,7 @@ function TabNavigation() {
 }
 
 export default function Navigation() {
+    const { userNameProfile } = usePost();
     return (
         <NavigationContainer>
             <Stack.Navigator>
@@ -80,7 +81,7 @@ export default function Navigation() {
                 <Stack.Screen name="EditProfile" component={EditProfile}/>
                 <Stack.Screen name="SearchDetail" component={SearchDetail} options={{headerTitle: "Explore"}}/>
                 <Stack.Screen name="History" component={History}/>
-                <Stack.Screen name="UserProfile" component={UserProfile}/>
+                <Stack.Screen name="UserProfile" component={UserProfile} options={{title: userNameProfile}}/>
             </Stack.Navigator>
         </NavigationContainer>
     );

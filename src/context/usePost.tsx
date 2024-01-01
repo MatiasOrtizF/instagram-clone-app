@@ -8,18 +8,23 @@ import { history } from "../service/HistoryService";
 import { comment } from "../service/CommentService";
 
 export const PostContext = createContext({
+    loading: true,
     isSinged: false, //chage to false
     setIsSinged: (value: boolean)=> {},
     userData: {} as UserData,
     setUserData: (value: UserData)=> {},
     allMyPosts: [] as Post[],
+    AllPostsByUserName: [] as Post[],
     posts: [] as Post[],
     historyUserSearch: [],
     comments: [] as Comment[],
+    userNameProfile: "",
+    setUserNameProfile: (value: string)=> {},
     setConfig: (config: AxiosRequestConfig)=> {},
     logOut: ()=> {},
     getAllPosts: ()=> {},
     getAllMyPosts: ()=> {},
+    getAllPostsByUserName: (userName: string)=> {},
     getAllSave: ()=> {},
     getAllHistorySearch: ()=> {},
     getAllComments: (postId: any)=> {},
@@ -31,7 +36,7 @@ interface Props {
 }
 
 export function PostProvider({children}: Props) {
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
     const [isSinged, setIsSinged] = useState<boolean>(false);
     const [userData, setUserData] = useState<UserData>({
         id: 0, //change this
@@ -49,6 +54,7 @@ export function PostProvider({children}: Props) {
         link: '',
     })
     const [allMyPosts, setAllMyPosts] = useState([]);
+    const [AllPostsByUserName, setAllPostsByUserName] = useState([]);
     const [posts, setPosts] = useState([]);
     const [config, setConfig] = useState<AxiosRequestConfig>({
         headers: {
@@ -59,6 +65,7 @@ export function PostProvider({children}: Props) {
     //History
     const [historyUserSearch, setHistoryUserSearch] = useState([]);
     const [comments, setComments] = useState([]);
+    const [userNameProfile, setUserNameProfile] = useState<string>("");
 
     useEffect(()=> {
         getAllSave();
@@ -92,11 +99,24 @@ export function PostProvider({children}: Props) {
             if(error.response.status === 401) {
                 alert("Your session has expired. Please log in again.");
                 logOut();
-            }
-            else if(error.response.status === 404) {
+            } else if(error.response.status === 404) {
                 alert(error.response.data); //User doest not exist
-            }
-            console.log(error);
+            } console.log(error);
+        })
+    }
+
+    const getAllPostsByUserName = (userName: string) => {
+        setLoading(true);
+        post.getAllPostByUsername(config, userName).then(response=> {
+            setAllPostsByUserName(response.data);
+            setLoading(false);
+        }).catch(error=> {
+            if(error.response.status === 401) {
+                alert("Your session has expired. Please log in again.");
+                logOut();
+            } else if (error.response.status === 404) {
+                alert(error.response.data); //User doest not exist
+            } console.log(error);
         })
     }
 
@@ -144,18 +164,23 @@ export function PostProvider({children}: Props) {
 
     return(
         <PostContext.Provider value={{
+            loading,
             isSinged,
             setIsSinged,
             userData,
             setUserData,
             allMyPosts,
+            AllPostsByUserName,
             posts,
             historyUserSearch,
             comments,
+            userNameProfile,
+            setUserNameProfile,
             setConfig,
             logOut,
             getAllPosts,
             getAllMyPosts,
+            getAllPostsByUserName,
             getAllSave,
             getAllHistorySearch,
             getAllComments,
