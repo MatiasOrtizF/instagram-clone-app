@@ -35,6 +35,14 @@ export interface UserData {
     imageProfile: string
 }
 
+export interface UserDataSearch {
+    id: number,
+    imageProfile: string,
+    userName: string,
+    name: string,
+    lastName: string,
+}
+
 export interface Post {
     id: number,
     user: User,

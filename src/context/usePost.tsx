@@ -1,11 +1,12 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { AxiosRequestConfig } from "axios";
-import { Comment, CommentData, Post, UserData } from "../types/index";
+import { Comment, CommentData, Post, UserData, UserDataSearch } from "../types/index";
 import { post } from "../service/PostService";
 import { save } from "../service/SaveService";
 import { like } from "../service/LikeService";
 import { history } from "../service/HistoryService";
 import { comment } from "../service/CommentService";
+import { user } from "../service/UserService";
 
 export const PostContext = createContext({
     loading: true,
@@ -16,7 +17,9 @@ export const PostContext = createContext({
     allMyPosts: [] as Post[],
     AllPostsByUserName: [] as Post[],
     posts: [] as Post[],
-    historyUserSearch: [],
+    config: {} as AxiosRequestConfig,
+    historyUserSearch: [] as UserDataSearch[],
+    usersSearch: [] as UserDataSearch[],
     comments: [] as Comment[],
     userNameProfile: "",
     setUserNameProfile: (value: string)=> {},
@@ -27,8 +30,11 @@ export const PostContext = createContext({
     getAllPostsByUserName: (userName: string)=> {},
     getAllSave: ()=> {},
     getAllHistorySearch: ()=> {},
+    addHistorySearch: (userId: number) => {},
+    deleteHistorySearch: (userId: number)=> {},
     getAllComments: (postId: any)=> {},
-    postComment: (commentData: CommentData, postId: any)=> {}
+    postComment: (commentData: CommentData, postId: any)=> {},
+    searchUser: (word: string)=> {}
 });
 
 interface Props {
@@ -62,8 +68,10 @@ export function PostProvider({children}: Props) {
             'Content-Type': 'application/json'
         }
     })
-    //History
-    const [historyUserSearch, setHistoryUserSearch] = useState([]);
+    // History
+    const [historyUserSearch, setHistoryUserSearch] = useState<UserDataSearch[]>([]);
+    const [usersSearch, setUsersSearch] = useState<UserDataSearch[]>([]);
+    // Comment
     const [comments, setComments] = useState([]);
     const [userNameProfile, setUserNameProfile] = useState<string>("");
 
@@ -137,9 +145,30 @@ export function PostProvider({children}: Props) {
         })
     }
 
+    //history
     const getAllHistorySearch = () => {
         history.getHistory(config).then(response=> {
-            setHistoryUserSearch(response.data);
+            const usersData = response.data.map((item: any)=> item.searchedUser)
+            setHistoryUserSearch(usersData);
+        }).catch(error=> {
+            console.log(error);
+        })
+    }
+
+    const addHistorySearch = (userId: number) => {
+        history.postHistory(config, userId).then(response=> {
+            console.log(response.data);
+        }).catch(error=> {
+            if(error.response.status === 400) {
+                alert(error.response.data);
+            } 
+            console.log(error);
+        })
+    }
+
+    const deleteHistorySearch = (userId: number) => {
+        history.deleteHistory(config, userId).then(response=> {
+            getAllHistorySearch();
         }).catch(error=> {
             console.log(error);
         })
@@ -162,6 +191,16 @@ export function PostProvider({children}: Props) {
         })
     }
 
+    //user
+    const searchUser = (word: string) => {
+        user.searchUserByUserName(config, word).then(response=> {
+            setUsersSearch(response.data);
+            console.log(usersSearch)
+        }).catch(error=> {
+            console.log(error);
+        })
+    }
+
     return(
         <PostContext.Provider value={{
             loading,
@@ -172,7 +211,9 @@ export function PostProvider({children}: Props) {
             allMyPosts,
             AllPostsByUserName,
             posts,
+            config,
             historyUserSearch,
+            usersSearch,
             comments,
             userNameProfile,
             setUserNameProfile,
@@ -183,8 +224,11 @@ export function PostProvider({children}: Props) {
             getAllPostsByUserName,
             getAllSave,
             getAllHistorySearch,
+            addHistorySearch,
+            deleteHistorySearch,
             getAllComments,
-            postComment
+            postComment,
+            searchUser
         }}>
             {children}
         </PostContext.Provider>

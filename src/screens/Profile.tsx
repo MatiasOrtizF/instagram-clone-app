@@ -1,20 +1,30 @@
 import { Text , View , SafeAreaView , Platform , ScrollView , Image , TouchableOpacity , FlatList, ImageBackground , TouchableHighlight} from 'react-native';
 import { usePost } from '../hooks/postContext';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Constants from 'expo-constants'
 import { Post } from '../types';
+import BottomSheet, { BottomSheetFlatList , BottomSheetModal, BottomSheetModalProvider  } from "@gorhom/bottom-sheet";
+import Modal from '../components/Modal';
+import { ConfigError } from 'expo/config';
+import ConfigModal from '../components/ConfigModal';
 
 export default function Profile({navigation}: any) {
     const { userData , allMyPosts , getAllMyPosts , logOut} = usePost();
 
     useEffect(()=> {
-        console.log(userData);
-        console.log(allMyPosts);
         getAllMyPosts();
     }, [])
 
+    const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+    const snapPoints = [200];
+
+    function handlePresentModal() {
+        bottomSheetModalRef.current?.present();
+    }
+
 
     return (
+        <BottomSheetModalProvider>
         <SafeAreaView>
             <View style={{marginTop: Platform.OS === 'android' ? Constants.statusBarHeight : 0 }}>
                 <FlatList
@@ -35,10 +45,10 @@ export default function Profile({navigation}: any) {
                                         <Image style={{width:20 , height:20 , marginLeft:5}} source={require('../../assets/icons/arrow-down-icon.png')} ></Image>
                                     </TouchableOpacity>                     */}
                                 </View>
-                                <View style={{flexDirection:"row"}}>
+                                <TouchableOpacity onPress={handlePresentModal}>
                                     {/* <Image style={{width:20, height:20 , alignSelf:"center" , marginRight:20}} source={require('../../assets/icons/add-profile-icon.png')}></Image> */}
                                     <Image source={require('../../assets/icons/menu-burger-icon.png')}></Image>
-                                </View>
+                                </TouchableOpacity>
                             </View>
                         </View>
     
@@ -106,7 +116,16 @@ export default function Profile({navigation}: any) {
                     numColumns={3}
                     keyExtractor={item=> item.id.toString()}
                 />
+                <BottomSheetModal
+                    ref={bottomSheetModalRef}
+                    index={0}
+                    snapPoints={snapPoints}
+                    enablePanDownToClose={true}
+                >
+                    <ConfigModal/>
+                </BottomSheetModal>
             </View>
         </SafeAreaView>
+        </BottomSheetModalProvider>
     );
 }
