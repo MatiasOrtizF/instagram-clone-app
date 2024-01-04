@@ -80,3 +80,9 @@ export interface CommentData {
     } 
     content: string,
 }
+
+export interface LikeData {
+    id: number,
+    post : Post,
+    user: User
+}

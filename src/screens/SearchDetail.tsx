@@ -68,13 +68,9 @@ export default function SearchDetail({route , navigation}: any) {
                         <Text>{post.content}</Text>
                     </Text>
                     {/* Si el largo de coomments es > 1 hace esto:*/}
-                    {/* <TouchableOpacity onPress={()=> navigation.navigate('Comments', {postId: data.post[postNumber].id})}> */}
-                        {/* {data.post[postNumber].comments.length > 1 ? 
-                            <Text style={{color:"gray"}}>Ver los {data.post[postNumber].comments.length} comentarios </Text>
-                            :
-                            null
-                        } */}
-                    {/* </TouchableOpacity> */}
+                    <TouchableOpacity onPress={()=> console.log("open modal")}>
+                            <Text style={{color:"gray"}}>Ver los {post.comments} comentarios </Text>
+                    </TouchableOpacity>
                     {/* {data.post[postNumber].comments.length > 1 ?
                         data.post[postNumber].comments.slice(0,2).map((comment, index) => (
                             <Text key={index}>

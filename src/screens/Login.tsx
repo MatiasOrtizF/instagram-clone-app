@@ -1,11 +1,11 @@
 import { Text , View , TextInput , TouchableOpacity , KeyboardAvoidingView } from 'react-native';
 import { usePost } from '../hooks/postContext';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UserLoginData } from '../types';
 import { login } from '../service/LoginService';
 
 export default function Login({navigation}: any) {
-    const { setConfig , setIsSinged , setUserData , getAllMyPosts} = usePost();
+    const { setConfig, setIsSinged, setUserData, userData, getAllMyPosts} = usePost();
 
     const [userName, setUserName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -26,7 +26,7 @@ export default function Login({navigation}: any) {
             } else if(error.response.status === 400) {
                 alert(error.response.data);
             } 
-            console.error("Error:", error);
+            console.log(error);
         })
     }
 

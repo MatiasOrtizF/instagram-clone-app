@@ -16,6 +16,10 @@ import SearchDetail from './src/screens/SearchDetail';
 import History from './src/screens/History';
 import Messages from './src/screens/Messages';
 import UserProfile from './src/screens/UserProfile';
+import Settings from './src/screens/Settings';
+import Saved from './src/screens/Saved';
+import Liked from './src/screens/Liked';
+
 
 const Tab = createBottomTabNavigator();
 
@@ -82,6 +86,9 @@ export default function Navigation() {
                 <Stack.Screen name="SearchDetail" component={SearchDetail} options={{headerTitle: "Explore"}}/>
                 <Stack.Screen name="History" component={History}/>
                 <Stack.Screen name="UserProfile" component={UserProfile} options={{title: userNameProfile}}/>
+                <Stack.Screen name="Settings" component={Settings}/>
+                <Stack.Screen name="Saved" component={Saved}/>
+                <Stack.Screen name="Liked" component={Liked}/>
             </Stack.Navigator>
         </NavigationContainer>
     );

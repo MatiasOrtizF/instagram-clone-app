@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { AxiosRequestConfig } from "axios";
-import { Comment, CommentData, Post, UserData, UserDataSearch } from "../types/index";
+import { Comment, CommentData, Post, UserData, UserDataSearch, LikeData } from "../types/index";
 import { post } from "../service/PostService";
 import { save } from "../service/SaveService";
 import { like } from "../service/LikeService";
@@ -21,7 +21,9 @@ export const PostContext = createContext({
     historyUserSearch: [] as UserDataSearch[],
     usersSearch: [] as UserDataSearch[],
     comments: [] as Comment[],
+    setComments: (value: Comment[])=> {},
     userNameProfile: "",
+    allLikes: [] as LikeData[],
     setUserNameProfile: (value: string)=> {},
     setConfig: (config: AxiosRequestConfig)=> {},
     logOut: ()=> {},
@@ -29,6 +31,7 @@ export const PostContext = createContext({
     getAllMyPosts: ()=> {},
     getAllPostsByUserName: (userName: string)=> {},
     getAllSave: ()=> {},
+    getAllLikes: ()=> {},
     getAllHistorySearch: ()=> {},
     addHistorySearch: (userId: number) => {},
     deleteHistorySearch: (userId: number)=> {},
@@ -72,8 +75,10 @@ export function PostProvider({children}: Props) {
     const [historyUserSearch, setHistoryUserSearch] = useState<UserDataSearch[]>([]);
     const [usersSearch, setUsersSearch] = useState<UserDataSearch[]>([]);
     // Comment
-    const [comments, setComments] = useState([]);
+    const [comments, setComments] = useState<Comment[]>([]);
     const [userNameProfile, setUserNameProfile] = useState<string>("");
+    // Likes
+    const [allLikes, setAllLikes] = useState<LikeData[]>([]);
 
     useEffect(()=> {
         getAllSave();
@@ -86,7 +91,11 @@ export function PostProvider({children}: Props) {
 
     const getAllPosts = () => {
         post.getAllPosts(config).then(response=> {
-            setPosts(response.data);
+            const postWithLiked = response.data.map((post: Post)=> {
+                const liked = likedPost(post.id);
+                return {...post, liked};
+            })
+            setPosts(postWithLiked);
             // const postData = response.data.map((item: any) => item.id)
             // const booleanLiked = likedPost(postData)
             // console.log(postData);
@@ -100,9 +109,10 @@ export function PostProvider({children}: Props) {
     }
 
     const getAllMyPosts = () => {
+        setLoading(true);
         post.getAllPostByUsername(config, userData.userName).then(response=> {
             setAllMyPosts(response.data);
-            console.log(response.data);
+            setLoading(false);
         }).catch(error=> {
             if(error.response.status === 401) {
                 alert("Your session has expired. Please log in again.");
@@ -128,6 +138,7 @@ export function PostProvider({children}: Props) {
         })
     }
 
+    // Saves
     const getAllSave = () => {
         save.getAllSave(config).then(response=> {
             
@@ -136,10 +147,20 @@ export function PostProvider({children}: Props) {
         })
     }
 
-    //likes
+    // Likes
     const likedPost = (postId: number) => {
         like.likedPost(config, postId).then(response=> {
-            console.log(response.data);
+            return response.data
+        }).catch(error=> {
+            console.log(error);
+        })
+    }
+
+    const getAllLikes = () => {
+        setLoading(true);
+        like.getAllLikes(config).then(response=> {
+            setAllLikes(response.data);
+            setLoading(false);
         }).catch(error=> {
             console.log(error);
         })
@@ -215,7 +236,9 @@ export function PostProvider({children}: Props) {
             historyUserSearch,
             usersSearch,
             comments,
+            setComments,
             userNameProfile,
+            allLikes,
             setUserNameProfile,
             setConfig,
             logOut,
@@ -223,6 +246,7 @@ export function PostProvider({children}: Props) {
             getAllMyPosts,
             getAllPostsByUserName,
             getAllSave,
+            getAllLikes,
             getAllHistorySearch,
             addHistorySearch,
             deleteHistorySearch,

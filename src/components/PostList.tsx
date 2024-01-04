@@ -11,7 +11,7 @@ import { Post } from '../types';
 import CommentsModal from './CommentsModal';
 import { useNavigation } from '@react-navigation/native';
 
-export default React.memo(function PostList({id, user, image, liked, saved, likes, content, createdAt }: Post) {
+export default React.memo(function PostList({id, user, image, liked, saved, likes, comments, content, createdAt }: Post) {
     const { getAllPosts, setUserNameProfile } = usePost();
     const navigation: any = useNavigation(); 
 
@@ -48,7 +48,7 @@ export default React.memo(function PostList({id, user, image, liked, saved, like
                                 <Image style={{width:27 , height:27}} source={require('../../assets/icons/like-icon.png')}></Image>
                             }
                         </TouchableOpacity>
-                        <TouchableWithoutFeedback  onPress={handlePresentModal}>
+                        <TouchableWithoutFeedback onPress={handlePresentModal}>
                             <Image style={{width:25,height:25 , marginLeft:20}} source={require('../../assets/icons/comentary-icon.png')}></Image>
                         </TouchableWithoutFeedback>
                     </View>
@@ -69,6 +69,7 @@ export default React.memo(function PostList({id, user, image, liked, saved, like
                     </View>
                 </View>
                 <View style={{marginHorizontal:10}}>
+                    <Text>{liked==true ? "true" : "false"}</Text>
                     <Text style={{fontWeight: "700"}}>{likes} Me gusta</Text>{/*modificar para que se vea asi: (1,123,758)*/}
                     <Text numberOfLines={2} ellipsizeMode='tail'>
                         <Text style={{fontWeight: "700"}}>{user.userName} </Text>
@@ -76,13 +77,9 @@ export default React.memo(function PostList({id, user, image, liked, saved, like
                     </Text>
                     {/* Si el largo de coomments es > 1 hace esto:*/}
                     {/*cambiar a modal*/ }
-                    {/* <TouchableOpacity onPress={()=> navigation.navigate('Comments', {postId: post.id})}>
-                        {post.comments.length > 1 ? 
-                            <Text style={{color:"gray"}}>Ver los {post.comments.length} comentarios </Text>
-                            :
-                            null
-                        } 
-                    </TouchableOpacity> */}
+                    <TouchableOpacity onPress={handlePresentModal}>
+                            <Text style={{color:"gray"}}>Ver los {comments} comentarios </Text>
+                    </TouchableOpacity>
                     {/* {post.comments.length > 1 ?
                         post.comments.slice(0,2).map((comment, index) => (
                             <Text key={index}>

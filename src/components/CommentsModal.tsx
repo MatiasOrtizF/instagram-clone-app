@@ -12,10 +12,14 @@ import CommentList from './CommentList';
 import Hr from './Hr';
 
 export default function CommentsModal({postId, userName}: {postId: number, userName: string}) {
-    const {getAllComments, postComment, comments, userData} = usePost();
+    const {getAllComments, postComment, comments, setComments, userData} = usePost();
 
     useEffect(()=> {
         getAllComments(postId);
+
+        return()=> {
+            setComments([]);
+        }
     }, [])
 
     const [input, setInput] = useState<string>("");

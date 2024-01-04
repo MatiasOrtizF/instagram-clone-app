@@ -7,9 +7,10 @@ import BottomSheet, { BottomSheetFlatList , BottomSheetModal, BottomSheetModalPr
 import Modal from '../components/Modal';
 import { ConfigError } from 'expo/config';
 import ConfigModal from '../components/ConfigModal';
+import Loading from '../components/Loading';
 
 export default function Profile({navigation}: any) {
-    const { userData , allMyPosts , getAllMyPosts , logOut} = usePost();
+    const { loading, userData , allMyPosts , getAllMyPosts , logOut } = usePost();
 
     useEffect(()=> {
         getAllMyPosts();
@@ -25,14 +26,17 @@ export default function Profile({navigation}: any) {
 
     return (
         <BottomSheetModalProvider>
-        <SafeAreaView>
-            <View style={{marginTop: Platform.OS === 'android' ? Constants.statusBarHeight : 0 }}>
+        <SafeAreaView style={{flex: 1}}>
+            <View style={{marginTop: Platform.OS === 'android' ? Constants.statusBarHeight : 0, flex: 1 }}>
                 <FlatList
                     data={allMyPosts}
                     renderItem={({item: post})=> (
-                            <TouchableHighlight style={{width:"32.93%", margin: "0.2%"}} onPress={()=> navigation.navigate('SearchDetail' , {post})}>
-                                <Image style={{height:100}} source={{uri:post.image}}></Image>
-                            </TouchableHighlight>
+                        loading ?
+                            <Loading/>
+                        :
+                        <TouchableHighlight style={{width:"32.93%", margin: "0.2%"}} onPress={()=> navigation.navigate('SearchDetail' , {post})}>
+                            <Image style={{height:100}} source={{uri:post.image}}></Image>
+                        </TouchableHighlight>
                     )}
                     ListHeaderComponent={          
                     <View>
